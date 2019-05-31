@@ -151,14 +151,17 @@ class Generator(object):
         # 循环生成所有加法口算题
 
         while True:
-
-            formula = self.__getFormula()  # 生成一道算式题
-            if formula:
-                slist.append(formula)
-                k += 1  # 成功添加一道
-            if k == self.number:
-                break
-
+            try:
+                formula = self.__getFormula()  # 生成一道算式题
+                if formula:
+                    slist.append(formula)
+                    k += 1  # 成功添加一道
+                if k == self.number:
+                    break
+            except ZeroDivisionError as e:
+                print(e)
+                continue
+                
         random.shuffle(slist)  # 洗牌，先打乱list中的排序
         self.__data_list = random.sample(slist, self.number)  # 随机取需要的口算题量。
         return self.__data_list
@@ -205,7 +208,7 @@ def main():
     g = Generator(add, sub, mult, div, signum, step, number, is_result, is_bracket, multistep, symbols)
 
     datalist = g.generate_data()
-    print(datalist)
+    print('formulas: ', datalist, flush=True)
 
 
 if __name__ == '__main__':
